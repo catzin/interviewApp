@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card__logo">
+        <img src="../../../../assets/images/visaaa.jpeg" alt="" srcset="">
+    </div>
+    <div class="card__data">
+        <div class="number">
+            <div class="number__dummy" *ngIf="cardNumber && cardNumber.length > 0; else dummy">{{cardNumber}}</div>
+            <ng-template #dummy>**** **** **** ****</ng-template>
+        </div>
+        <div class="name">{{cardName}}</div>
+    </div>
+  
+
+</div>

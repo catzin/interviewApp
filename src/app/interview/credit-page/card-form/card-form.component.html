@@ -1,0 +1,28 @@
+<div class="container">
+    <form class="form" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <div class="form__input">
+            <label for="name">Name of card holder</label>
+            <input type="text" class="principal" id="name" maxlength="50" formControlName="name" appOnlyLetters autocomplete="false">
+        </div>
+        <div class="form__input">
+            <label for="number">Credit card number</label>
+            <input type="text" id="number" class="accent" formControlName="cardNumber" inputmode="numeric" appCardFormat autocomplete="false">
+
+        </div>
+        <div class="row">
+            <div class="form__input">
+                <label for="exp">Expiration</label>
+                <input type="text" class="principal" id="exp" placeholder="MM/YY" formControlName="expiration" appCardExpiration autocomplete="false">
+            </div>
+            <div class="form__input">
+                <label for="cvv">CVV</label>
+                <input type="password" class="principal" id="cvv" formControlName="cvv" maxlength="3" inputmode="numeric" appOnlyNumbers autocomplete="false">
+            </div>
+            
+        </div>
+        <div class="row">
+            <button class="button button--make" type="submit">Make Payment</button>
+            <button class="button button--cancel" type="button" (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>
