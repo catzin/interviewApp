@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreditPageComponent } from './credit-page/credit-page.component';
 
 const routes: Routes = [
-  
+
   {
-    path: '', 
-    component: CreditPageComponent
+    path: '',
+    component: CreditPageComponent,
   }
 ];
 
