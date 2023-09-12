@@ -13,6 +13,8 @@ export class CardFormComponent implements OnInit, OnDestroy {
 
   public dataForm !: FormGroup;
   public observables = new Subscription();
+  public validMonths = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+  public actualDate : Date = new Date();
 
   constructor(private fb: FormBuilder, private cardService: CardService) { }
 
@@ -24,7 +26,7 @@ export class CardFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dataForm = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       cardNumber: ['', [Validators.required]],
       expiration: ['', [Validators.required]],
       cvv: ['', [Validators.required]]
@@ -35,22 +37,54 @@ export class CardFormComponent implements OnInit, OnDestroy {
 
   public onSubmit():void{
     if(this.dataForm.invalid){
+      if(this.dataForm.get('name')?.errors){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'The name field must contain at least three letters.',
+  
+        })
+        
+      }
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Verify your data!',
+        text: 'Verify that your information is complete!',
 
       })
 
     }
     else{
-      Swal.fire({
+
+      const {expiration} = this.dataForm.value;
+      const partsExpiration = expiration.split('/');
+      const actualYear = this.actualDate.getFullYear().toString().slice(-2);
+    
+      if((this.validMonths.includes(partsExpiration[0])) &&( partsExpiration[1] >= actualYear )){
+        Swal.fire({
         position: 'center',
         icon: 'success',
         title: 'successful payment',
         showConfirmButton: false,
         timer: 1500
       })
+        
+
+      }
+      else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Verify your expiration date',
+  
+        })
+
+
+      }
+
+
+
+      
     }
 
   }
@@ -61,7 +95,12 @@ export class CardFormComponent implements OnInit, OnDestroy {
   public listenData(): void {
     this.observables.add(
       this.dataForm.get('cardNumber')?.valueChanges.subscribe((number) => {
-        this.cardService.emitCardNumber(number);
+        let cardVal: string = this.dataForm.get('cardNumber')?.value;
+      
+        if(cardVal.length <= 19){
+          this.cardService.emitCardNumber(number);
+        }
+        
       })
     );
     this.observables.add(

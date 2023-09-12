@@ -12,7 +12,9 @@ export class CardExpirationDirective {
   public onInput(event: Event): void {
     const inputElement = this.element.nativeElement as HTMLInputElement;
     let value = inputElement.value.replace(/\s+/g, '');
+
     value = value.replace(/\D/g, '');
+
 
     if (value.length > 4) {
       value = value.slice(0, 4);
@@ -21,6 +23,7 @@ export class CardExpirationDirective {
     if (value.length >= 2) {
 
       value = value.slice(0, 2) + '/' + value.slice(2);
+      const parts = value.split('/');
     }
 
     inputElement.value = value;
@@ -35,6 +38,7 @@ export class CardExpirationDirective {
 
         event.preventDefault();
         const value = target.value.split('');
+
         value.splice(2, 1);
         target.value = value.join('');
       }
